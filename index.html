@@ -157,32 +157,36 @@
     
     /* Enhanced code block styles */
     pre {
-      background-color: #1e1e1e;
-      border-radius: 8px;
-      padding: 1.5rem 1rem;
+      background-color: #ffffff;
+      border-radius: 4px;
+      padding: 1.5rem;
       margin: 1rem 0;
       overflow-x: auto;
       position: relative;
-      border: 1px solid #2d2d2d;
+      border: 1px solid #e5e7eb;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     }
     code {
       font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
       font-size: 0.9rem;
-      line-height: 1.5;
+      line-height: 1.6;
       display: block;
-      color: #e5e7eb;
     }
     html.dark pre {
-      background-color: #1a1a1a;
-      border-color: #2d2d2d;
-    }
-    html.light pre {
       background-color: #1e1e1e;
       border-color: #2d2d2d;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+    html.light pre {
+      background-color: #ffffff;
+      border-color: #e5e7eb;
+      color: #1a1a1a;
+    }
+    html.dark code {
       color: #e5e7eb;
     }
     html.light code {
-      color: #e5e7eb;
+      color: #1a1a1a;
     }
     .language-bash { color: inherit; }
     .language-json { color: inherit; }
@@ -306,11 +310,11 @@
 
     <!-- Sidebar -->
     <aside class="sidebar">
-      <a href="#documentacion-capacidades">Documentación y Capacidades</a>
-      <a href="#instalacion-playwright">Instalación Playwright</a>
-      <a href="#manual-funcional-ejecucion">Ejecución de Pruebas</a>
-      <a href="#estructura-principal">Estructura Principal</a>
-      <a href="#organizacion-pages-locators">Organización de Pages y Locators</a>
+      <a href="#documentacion-capacidades">📚 Documentación y Capacidades</a>
+      <a href="#instalacion-playwright">⚙️ Instalación Playwright</a>
+      <a href="#manual-funcional-ejecucion">▶️ Ejecución de Pruebas</a>
+      <a href="#estructura-principal">📁 Estructura Principal</a>
+      <a href="#organizacion-pages-locators">📂 Organización de Pages y Locators</a>
     </aside>
 
     <!-- Contenido -->
@@ -319,7 +323,7 @@
         <!-- TODO DOCUMENTO PEGADO ACÁ -->
        <!-- Instalación Playwright -->
        <section id="instalacion-playwright">
-        <h1 class="text-4xl font-bold mb-6">Instalación Playwright</h1>
+        <h1 class="text-4xl font-bold mb-6">⚙️ Instalación Playwright</h1>
     
         <div class="space-y-8">
           <div>
@@ -404,7 +408,7 @@
 
         <!-- Documentación y Capacidades -->
         <section id="documentacion-capacidades">
-          <h2 class="text-3xl font-bold mb-4">Documentación y Capacidades 📄</h2>
+          <h1 class="text-4xl font-bold mb-6">📚 Documentación y Capacidades</h1>
           <p class="mt-2">El framework ha sido diseñado para ser fácilmente escalable e integrable en pipelines de CI/CD, permitiendo la ejecución automática de pruebas en distintos entornos.</p>
           <p class="mt-2">Además, genera reportes completos de resultados mediante la herramienta Allure, capturando tanto capturas de pantalla como grabaciones de video en los casos de falla.</p>
           <p class="mt-2">El proyecto cuenta con:</p>
@@ -422,7 +426,7 @@
         
 <!-- Manual Funcional - Ejecución de Pruebas -->
 <section id="manual-funcional-ejecucion">
-  <h1 class="text-4xl font-bold mb-6">Ejecución de Pruebas</h1>
+  <h1 class="text-4xl font-bold mb-6">▶️ Ejecución de Pruebas</h1>
 
   <div class="space-y-8">
     <div>
@@ -456,7 +460,7 @@ Given Dirigirse a HomeBanking
 
 <!-- Estructura Principal -->
 <section id="estructura-principal">
-  <h2 class="text-3xl font-bold mb-6">Estructura Principal 📁</h2>
+  <h2 class="text-3xl font-bold mb-6">📁 Estructura Principal</h2>
 
   <pre><code class="language-plaintext">
 data/ > Datos de prueba
@@ -509,7 +513,7 @@ playwright.config.js > Configuración general de Playwright
 
 <!-- Organización de Pages y Locators -->
 <section id="organizacion-pages-locators">
-  <h1 class="text-4xl font-bold mb-6">Manual Funcional - Organización de Pages y Locators</h1>
+  <h1 class="text-4xl font-bold mb-6">📂 Organización de Pages y Locators</h1>
 
   <div class="space-y-8">
     <div>

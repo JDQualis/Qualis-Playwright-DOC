@@ -5,8 +5,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Qualis Lab - Playwright DOC - Estructura del Proyecto</title>
-
-  <link rel="icon" type="image/x-icon" href="./assets/favicon.ico">
+  
+   <!-- Favicon -->
+   <link rel="icon" type="image/x-icon" href="./assets/favicon.ico">
+   <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
+   <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+   <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+   <link rel="manifest" href="/assets/site.webmanifest">
 
   <!-- Tipografía y estilos -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap" rel="stylesheet">
@@ -33,29 +38,42 @@
       <div class="content-container">
 
         <section id="estructura-principal">
-          <h1 class="section-title">📁 Manual Funcional - Estructura del Proyecto</h1>
-
-          <pre><code class="language-plaintext">data/ > Datos de prueba
-
-Features/
+          <h1 class="section-title">📁 Estructura del Proyecto</h1>
+        
+          <p class="section-paragraph">
+            El proyecto está organizado siguiendo una estructura modular que facilita su mantenimiento, escalabilidad y entendimiento general.
+            Cada carpeta y archivo cumple una función específica dentro del ciclo de automatización, desde la gestión de datos de prueba hasta la configuración de entornos de ejecución y generación de reportes automáticos.
+          </p>
+        
+          <p class="section-paragraph">
+            A continuación, se detalla la estructura principal del repositorio, describiendo brevemente el propósito de cada carpeta y archivo más relevante:
+          </p>
+        
+          <pre><code class="language-plaintext">
+📁data/ > Datos de prueba
+ |
+📁Features/
  └── spec.feature > Escenarios Gherkin
-
-node_modules/ > Librerías necesarias para la ejecución
-
-output/ > Todos los archivos relacionados al reporte
+ |
+📁node_modules/ > Librerías necesarias para la ejecución
+ |
+📁output/ > Todos los archivos relacionados al reporte
+ |
  ├── allure-report/ > El archivo HTML dentro de esta carpeta posee el reporte final
  ├── allure-results/
  ├── screenshots/ > Capturas de pantalla de errores
  └── videos/ > Grabaciones de las ejecuciones
-
-src/
+ |
+📁src/
  ├── pages/
  │    └── page.js > Acciones simples
  │    └── locators.js > Elementos de las páginas
+ |
  ├── step_definitions/
  │    └── exampleSteps.js > Pasos para ejecutar los pasos del Gherkin
-
-support/ > Archivos de configuración
+ |
+📁support/ > Archivos de configuración
+ |
  ├── browser.Config.js > Configuración del browser
  ├── generateCucumberReport.js > Configuración Cucumber Report
  ├── TestHooks.js > Hook del Framework

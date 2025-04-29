@@ -1,50 +1,36 @@
-// scripts/search.js
-
-document.addEventListener('DOMContentLoaded', function () {
+loadComponent('header-container', 'components/header.html', () => {
+    initHeader();
+  
+    // 💡 MOVER ESTO DENTRO
     const searchInput = document.getElementById('search-input');
-    const searchResults = document.getElementById('search-results');
+    const resultsBox = document.getElementById('search-results');
   
-    if (!searchInput || !searchResults) return;
+    searchInput?.addEventListener('input', async () => {
+      const query = searchInput.value.trim().toLowerCase();
   
-    searchInput.addEventListener('input', function (e) {
-      const searchTerm = e.target.value.toLowerCase();
-      const content = document.querySelector('.content');
-      const headings = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
-  
-      searchResults.innerHTML = '';
-  
-      if (searchTerm === '') {
-        searchResults.classList.remove('active');
+      if (query.length === 0) {
+        resultsBox.innerHTML = '';
+        resultsBox.classList.remove('active');
         return;
       }
   
-      const matches = Array.from(headings).filter(heading =>
-        heading.textContent.toLowerCase().includes(searchTerm)
-      );
+      const res = await fetch('search-index.json');
+      const data = await res.json();
   
-      if (matches.length > 0) {
-        searchResults.classList.add('active');
-        matches.forEach(match => {
-          const resultItem = document.createElement('div');
-          resultItem.className = 'search-result-item';
-          resultItem.textContent = match.textContent;
-          resultItem.addEventListener('click', () => {
-            match.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            searchInput.value = '';
-            searchResults.classList.remove('active');
-          });
-          searchResults.appendChild(resultItem);
-        });
-      } else {
-        searchResults.classList.remove('active');
-      }
-    });
+      const filtered = data.flatMap(section => {
+        return section.headings
+          .filter(h => h.toLowerCase().includes(query))
+          .map(h => ({
+            title: h,
+            url: section.url
+          }));
+      });
   
-    // Cerrar resultados si clickeás afuera
-    document.addEventListener('click', function (e) {
-      if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
-        searchResults.classList.remove('active');
-      }
+      resultsBox.innerHTML = filtered.map(item =>
+        `<div class="search-result-item" onclick="location.href='${item.url}'">${item.title}</div>`
+      ).join('');
+  
+      resultsBox.classList.toggle('active', filtered.length > 0);
     });
   });
   

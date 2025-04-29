@@ -5,693 +5,107 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Qualis Lab - Playwright DOC</title>
-  
+
   <!-- Favicon -->
-  <link rel="icon" type="image/x-icon" href="https://drive.google.com/uc?export=view&id=1xyLfoY14aWklOYIUtoVSI31cVPvv-H5B">
+  <link rel="icon" type="image/x-icon" href="./assets/favicon.ico">
 
   <!-- TailwindCSS -->
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap" rel="stylesheet">
-  <!-- Highlight.js -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+  <!-- Highlight.js para bloques de código -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/github-dark.min.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
   <script>hljs.highlightAll();</script>
 
-  <style>
-    html {
-      scroll-behavior: smooth;
-    }
-    body {
-      font-family: 'Helvetica', sans-serif;
-      background-color: #ffffff;
-      color: #111827;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      height: 100vh;
-      overflow: hidden;
-      transition: background-color 0.3s, color 0.3s;
-    }
-    h1, h2, h3 {
-      font-family: 'Poppins', sans-serif;
-    }
-
-    .header {
-      width: 100%;
-      background-color: #000000;
-      padding: 10px 40px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      box-sizing: border-box;
-      flex-shrink: 0;
-    }
-    .logo {
-      width: 130px;
-      height: auto;
-      object-fit: contain;
-    }
-    .nav-buttons {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
-    .main-content {
-      display: flex;
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-    }
-    .sidebar {
-      width: 250px;
-      background: #f9fafb;
-      height: 100%;
-      padding: 30px 10px;
-      box-sizing: border-box;
-      border-right: 1px solid #e5e7eb;
-      overflow-y: auto;
-    }
-    .sidebar a {
-      display: block;
-      margin: 12px 10px;
-      color: #6b7280;
-      text-decoration: none;
-      font-weight: 500;
-      font-size: 16px;
-      transition: color 0.3s;
-    }
-    .sidebar a:hover {
-      color: #3b82f6;
-    }
-    .content {
-      flex: 1;
-      overflow-y: auto;
-      padding: 20px;
-      background-color: #ffffff;
-      color: #111827;
-    }
-    .content-container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 2rem;
-    }
-    .toggle-switch {
-      position: relative;
-      width: 45px;
-      height: 24px;
-    }
-    .toggle-switch input {
-      opacity: 0;
-      width: 0;
-      height: 0;
-    }
-    .slider {
-      position: absolute;
-      cursor: pointer;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: #2c2c2c;
-      transition: .4s;
-      border-radius: 24px;
-    }
-    .slider::before {
-      position: absolute;
-      content: "";
-      height: 20px;
-      width: 20px;
-      left: 2px;
-      bottom: 2px;
-      background-color: white;
-      border-radius: 50%;
-      transition: .4s;
-    }
-    input:checked + .slider {
-      background-color: #cccccc;
-    }
-    input:checked + .slider::before {
-      transform: translateX(21px);
-    }
-    
-    /* Dark mode styles */
-    html.dark body {
-      background-color: #111827;
-      color: #f3f4f6;
-    }
-    html.dark .content {
-      background-color: #111827;
-      color: #f3f4f6;
-    }
-    html.dark .sidebar {
-      background: #1f2937;
-      border-right-color: #374151;
-    }
-    html.dark .sidebar a {
-      color: #d1d5db;
-    }
-    html.dark .sidebar a:hover {
-      color: #60a5fa;
-    }
-    
-    /* Enhanced code block styles */
-    pre {
-      background-color: #ffffff;
-      border-radius: 4px;
-      padding: 1.5rem;
-      margin: 1rem 0;
-      overflow-x: auto;
-      position: relative;
-      border: 1px solid #e5e7eb;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    }
-    code {
-      font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
-      font-size: 0.9rem;
-      line-height: 1.6;
-      display: block;
-    }
-    html.dark pre {
-      background-color: #1e1e1e;
-      border-color: #2d2d2d;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    }
-    html.light pre {
-      background-color: #ffffff;
-      border-color: #e5e7eb;
-      color: #1a1a1a;
-    }
-    html.dark code {
-      color: #e5e7eb;
-    }
-    html.light code {
-      color: #1a1a1a;
-    }
-    .language-bash { color: inherit; }
-    .language-json { color: inherit; }
-    .language-gherkin { color: inherit; }
-    .language-plaintext { color: inherit; }
-
-    /* Search box styles */
-    .search-box {
-      position: relative;
-      margin-right: 1rem;
-    }
-    .search-input {
-      width: 250px;
-      height: 36px;
-      padding: 0 16px;
-      background-color: #ffffff;
-      border: 1px solid #e5e7eb;
-      border-radius: 6px;
-      font-size: 14px;
-      color: #111827;
-      transition: all 0.3s;
-    }
-    .search-results {
-      display: none;
-      position: absolute;
-      top: 100%;
-      left: 0;
-      right: 0;
-      background: #ffffff;
-      border: 1px solid #e5e7eb;
-      border-radius: 6px;
-      margin-top: 4px;
-      max-height: 300px;
-      overflow-y: auto;
-      z-index: 50;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    }
-    .search-results.active {
-      display: block;
-    }
-    .search-result-item {
-      padding: 8px 16px;
-      cursor: pointer;
-      transition: background-color 0.2s;
-    }
-    .search-result-item:hover {
-      background-color: #f3f4f6;
-    }
-    html.dark .search-results {
-      background: #1f2937;
-      border-color: #374151;
-    }
-    html.dark .search-result-item:hover {
-      background-color: #374151;
-    }
-    html.dark .search-input {
-      background-color: #1f2937;
-      border-color: #374151;
-      color: #f3f4f6;
-    }
-    .search-input:focus {
-      outline: none;
-      border-color: #3b82f6;
-      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
-    }
-
-    /* Smooth scroll for all anchor links */
-    html {
-      scroll-behavior: smooth;
-    }
-    
-    /* Section styling */
-    section {
-      scroll-margin-top: 80px;
-      position: relative;
-      padding-top: 1rem;
-    }
-    
-    hr {
-      margin: 1.5rem 0;
-      border-color: #374151;
-    }
-    
-    html.light hr {
-      border-color: #e5e7eb;
-    }
-    
-    .space-y-8 > * + * {
-      margin-top: 1rem;
-    }
-    
-    .space-y-16 > * + * {
-      margin-top: 1.5rem;
-    }
-  </style>
+  <!-- Tu CSS adicional -->
+  <link rel="stylesheet" href="styles.css">
 </head>
 
-<body>
+<body class="bg-gray-50 text-gray-900 font-sans">
 
-  <header class="header">
-    <img src="https://qualis-lab.com/wp-content/uploads/2025/02/Logo-5-1536x471.png" alt="Qualis Lab Logo" class="logo">
-
-    <div class="nav-buttons">
-      <div class="search-box">
-        <input type="text" 
-               id="search-input"
-               class="search-input" 
-               placeholder="Buscar..." 
-               aria-label="Buscar en la documentación">
-        <div id="search-results" class="search-results"></div>
-      </div>
-
-      <label class="toggle-switch" title="Dark mode">
-        <input type="checkbox" id="theme-toggle">
-        <span class="slider"></span>
-      </label>
-    </div>
-  </header>
+  <!-- HEADER dinámico -->
+  <div id="header-container"></div>
 
   <div class="main-content">
+    <!-- SIDEBAR dinámico -->
+    <div id="sidebar-container"></div>
 
-    <!-- Sidebar -->
-    <aside class="sidebar">
-      <a href="#documentacion-capacidades">📚 Documentación y Capacidades</a>
-      <a href="#instalacion-playwright">⚙️ Instalación Playwright</a>
-      <a href="#manual-funcional-ejecucion">▶️ Ejecución de Pruebas</a>
-      <a href="#estructura-principal">📁 Estructura Principal</a>
-      <a href="#organizacion-pages-locators">📂 Organización de Pages y Locators</a>
-    </aside>
-
-    <!-- Contenido -->
+    <!-- CONTENIDO -->
     <div class="content">
       <div class="content-container">
-        <!-- TODO DOCUMENTO PEGADO ACÁ -->
-       <!-- Instalación Playwright -->
-       <section id="instalacion-playwright">
-        <h1 class="text-4xl font-bold mb-6">⚙️ Instalación Playwright</h1>
-    
-        <div class="space-y-8">
-          <div>
-            <h2 class="text-2xl font-semibold mb-4">Descripción 📚</h2>
-            <p class="mt-2">Este documento permite instalar y dejar listo el entorno necesario para utilizar el framework de automatización basado en Playwright, Cucumber y Node.js.</p>
-            <p class="mt-2">Este repositorio contiene una prueba de concepto (PoC) para el uso de Playwright en proyectos de automatización de pruebas, utilizando Cucumber y Node.js.</p>
-            <p class="mt-2">Este proyecto explora las capacidades de Playwright, incluyendo ejemplos básicos de interacción con navegadores Chrome, Firefox y WebKit, junto con Cucumber para escribir pruebas en lenguaje natural.</p>
-          </div>
-    
-          <div>
-            <h2 class="text-2xl font-semibold mb-4">Instalación 🛠️</h2>
-    
-            <h3 class="text-xl font-semibold mt-6">1. Clonar el repositorio</h3>
-            <pre><code class="language-bash">git clone https://github.com/Qualis-Lab-QA/Template-Playwright</code></pre>
-    
-            <h3 class="text-xl font-semibold mt-6">2. Navegar al directorio del proyecto</h3>
-            <pre><code class="language-bash">cd POC-Playwright</code></pre>
-    
-            <h3 class="text-xl font-semibold mt-6">3. Instalar Playwright</h3>
-            <pre><code class="language-bash">npx install playwright</code></pre>
-    
-            <h3 class="text-xl font-semibold mt-6">4. Instalar dependencias</h3>
-            <pre><code class="language-bash">npm install</code></pre>
-    
-            <h3 class="text-xl font-semibold mt-6">5. Instalar extensiones recomendadas en VS Code</h3>
-            <ul class="list-disc list-inside mt-2">
-              <li>Cucumber - Cucumber</li>
-              <li>Playwright Test for VSCode - Microsoft</li>
-              <li>Playwright Test Snippets - Marl Skeleton</li>
-              <li>Gherkin Beautifier - Siarhei Kuchuk</li>
-              <li>Test Cucumber (Gherkin) Full Support - Robin GROSS</li>
-            </ul>
-    
-            <h3 class="text-xl font-semibold mt-6">6. Configurar extensiones en VS Code</h3>
-            <p class="mt-2">Agregar en <code>settings.json</code> la siguiente configuración:</p>
-            <pre><code class="language-json">
-    {
-      "cucumberautocomplete.steps": [
-        "cypress/e2e/step_definitions/*.js",
-        "src/step_definitions/*.js",
-        "src/steps/*.js"
-      ],
-      "cucumberautocomplete.syncfeatures": "features/*.feature",
-      "[javascript]": {
-        "editor.defaultFormatter": "vscode.typescript-language-features"
-      },
-      "cucumberautocomplete.onTypeFormat": true,
-      "cucumberautocomplete.strictGherkinCompletion": true,
-      "cucumberautocomplete.strictGherkinValidation": true,
-      "tabnine.experimentalAutoImports": true,
-      "javascript.updateImportsOnFileMove.enabled": "always",
-      "playwright.reuseBrowser": true,
-      "playwright.showTrace": false,
-      "explorer.confirmDragAndDrop": false,
-      "codeium.enableConfig": {
-        "*": true,
-        "javascript": false
-      },
-      "explorer.confirmDelete": false,
-      "git.confirmSync": false,
-      "liveServer.settings.donotShowInfoMsg": true
-    }
-    </code></pre>
-    
-    <h3 class="text-xl font-semibold mt-6">7. Instalar Java</h3>
-    <p class="mt-2">Es necesario tener Java instalado para poder generar reportes con Allure.</p>
-    
-    <h3 class="text-xl font-semibold mt-6">8. Creación de carpeta para Generar Reportes 🗂️</h3>
-    <pre><code class="language-plaintext">
-    📂 output/
-     ┣ 📂 screenshots      ✅ (Capturas de pantalla en caso de fallos)
-     ┣ 📂 videos           ✅ (Grabaciones de la ejecución)
-     ┣ 📂 allure-report    ✅ (Reporte HTML generado)
-     ┗ 📂 allure-results   ✅ (Datos para la generación del reporte)
-    </code></pre>
-    </div>
-    </div>
-    </section>
-    
-    <hr class="border-gray-700">
-      <div class="max-w-5xl mx-auto py-10 px-6 space-y-16">
+        <section id="introduccion" class="section-content">
+          <h1 class="section-title">
+            Bienvenido a la Documentación de Playwright
+          </h1>
 
-        <!-- Documentación y Capacidades -->
-        <section id="documentacion-capacidades">
-          <h1 class="text-4xl font-bold mb-6">📚 Documentación y Capacidades</h1>
-          <p class="mt-2">El framework ha sido diseñado para ser fácilmente escalable e integrable en pipelines de CI/CD, permitiendo la ejecución automática de pruebas en distintos entornos.</p>
-          <p class="mt-2">Además, genera reportes completos de resultados mediante la herramienta Allure, capturando tanto capturas de pantalla como grabaciones de video en los casos de falla.</p>
-          <p class="mt-2">El proyecto cuenta con:</p>
-          <ul class="list-disc list-inside mt-2">
-            <li>Soporte para ejecución paralela de escenarios.</li>
-            <li>Soporte para ejecución en dispositivos móviles simulados.</li>
-            <li>Soporte para generación de reportes automáticos (HTML) post-ejecución.</li>
-            <li>Organización modular para facilitar el mantenimiento y escalabilidad.</li>
-            <li>Compatibilidad para integración futura con notificaciones de resultados (Slack, correo electrónico, etc.).</li>
-          </ul>
+          <p class="section-paragraph">
+            Esta documentación describe el uso, instalación, ejecución y buenas prácticas del framework Playwright desarrollado para Qualis Lab.
+          </p>
+
+          <p class="section-paragraph">
+            Utilizá el menú lateral o el buscador para navegar entre las diferentes secciones.
+          </p>
+
+          <hr class="hr-divider">
+
+          <p class="section-paragraph">
+            Este documento permite instalar y dejar listo el entorno necesario para utilizar el framework de automatización basado en Playwright, Cucumber y Node.js.
+          </p>
+
+          <p class="section-paragraph">
+            Este repositorio contiene una prueba de concepto (PoC) para el uso de Playwright en proyectos de automatización de pruebas, utilizando Cucumber y Node.js.
+          </p>
+
+          <p class="section-paragraph">
+            Este proyecto explora las capacidades de Playwright, incluyendo ejemplos básicos de interacción con navegadores Chrome, Firefox y WebKit, junto con Cucumber para escribir pruebas en lenguaje natural.
+          </p>
         </section>
-      
-        <hr class="border-gray-700">
-      
-        
-<!-- Manual Funcional - Ejecución de Pruebas -->
-<section id="manual-funcional-ejecucion">
-  <h1 class="text-4xl font-bold mb-6">▶️ Ejecución de Pruebas</h1>
-
-  <div class="space-y-8">
-    <div>
-      <h2 class="text-2xl font-semibold mb-4">Uso 🚀</h2>
-      <p class="mt-2">Una vez que hayas instalado las dependencias, puedes ejecutar las pruebas utilizando los siguientes comandos:</p>
-
-      <pre><code class="language-bash">
-npm run test              # Ejecuta las pruebas de Cucumber y genera reporte
-npm run test:local        # Ejecuta las pruebas en modo no headless y genera los reportes
-npm run test:headless     # Ejecuta las pruebas en modo headless y genera los reportes
-npm run test:mobile       # Ejecuta las pruebas en un entorno simulado de móvil
-</code></pre>
-    </div>
-
-    <div>
-      <h2 class="text-2xl font-semibold mb-4">Ejecución con Tags 🏷️</h2>
-      <p class="mt-2">Para ejecutar pruebas filtrando por tags, se utiliza el siguiente comando:</p>
-      <pre><code class="language-bash">npm run test:tag --tags "@tagEjemplo"</code></pre>
-
-      <p class="mt-4">Ejemplo de cómo definir un tag en el archivo Feature:</p>
-      <pre><code class="language-gherkin">
-@tagEjemplo
-Scenario: Solicitud Chequera
-Given Dirigirse a HomeBanking
-</code></pre>
+      </div>
     </div>
   </div>
-</section>
 
-<hr class="border-gray-700">
-
-<!-- Estructura Principal -->
-<section id="estructura-principal">
-  <h2 class="text-3xl font-bold mb-6">📁 Estructura Principal</h2>
-
-  <pre><code class="language-plaintext">
-data/ > Datos de prueba
-
-Features/
-└── spec.feature > Escenarios Gherkin
-
-node_modules/ > Librerías necesarias para la ejecución
-
-output/ > Todos los archivos relacionados al reporte
-├── allure-report/ > El archivo HTML dentro de esta carpeta posee el reporte final
-├── allure-results/
-├── screenshots/ > Capturas de pantalla de errores
-└── videos/ > Grabaciones de las ejecuciones
-
-src/
-├── pages/
-│    └── page.js > Acciones simples
-│    └── locators.js > Elementos de las páginas
-├── step_definitions/
-│    └── exampleSteps.js > Pasos para ejecutar los pasos del Gherkin
-
-support/ > Archivos de configuración
-├── browser.Config.js
-├── generateCucumberReport.js
-├── TestHooks.js
-└── utils.js
-
-.env > Variables de entorno
-
-commands.txt > Comandos frecuentes de ejecución
-
-cucumber.json > Configuración de Cucumber
-
-global.d.ts > Tipado global
-
-gitignore.txt > Archivos ignorados en el repo
-
-jsconfig.json > Configuración de autocompletado en JS
-
-package.json > Dependencias y scripts de ejecución
-
-package-lock.json > Control de versiones de dependencias
-
-playwright.config.js > Configuración general de Playwright
-</code></pre>
-</section>
-
-<hr class="border-gray-700">
-
-<!-- Organización de Pages y Locators -->
-<section id="organizacion-pages-locators">
-  <h1 class="text-4xl font-bold mb-6">📂 Organización de Pages y Locators</h1>
-
-  <div class="space-y-8">
-    <div>
-      <h2 class="text-2xl font-semibold mb-4">Estructura General</h2>
-      <pre><code class="language-plaintext">
-src/
-└── pages/
-    └── {sección}/
-        ├── {page}.js (clase de página)
-        └── locators.js (localizadores de elementos)
-</code></pre>
-    </div>
-
-    <div>
-      <h2 class="text-2xl font-semibold mb-4">Organización de las Clases</h2>
-
-      <h3 class="text-xl font-semibold mt-6">1. Clase Page ({page}.js)</h3>
-      <p class="mt-2">Cada archivo {page}.js representa una sección funcional del sistema, incluyendo métodos simples y compuestos.</p>
-
-      <pre><code class="language-javascript">
-const elements = require('./locators').solicitarLocators;
-
-class Solicitar {
-  async clickCheques() {
-    await elements.btn.cheques().click();
-  }
-  async clickSolicitar() {
-    await elements.btn.solicitar().click();
-  }
-}
-
-module.exports = new Solicitar();
-</code></pre>
-
-      <h3 class="text-xl font-semibold mt-8">2. Localizadores (locators.js)</h3>
-      <pre><code class="language-javascript">
-let solicitarLocators = {
-  btn: {
-    cheques: () => page.locator('span', { hasText: 'Cheques' }),
-    solicitar: () => page.locator('div >> text="solicitar"')
-  },
-  input: {
-    token: () => page.locator('input')
-  }
-};
-
-module.exports = { solicitarLocators };
-</code></pre>
-    </div>
-
-    <div>
-      <h2 class="text-2xl font-semibold mb-4">Funciones con Parámetros</h2>
-      <pre><code class="language-javascript">
-async fillToken(token) {
-  await input.token().fill(token);
-}
-</code></pre>
-
-      <p class="mt-2">Desde el Step:</p>
-      <pre><code class="language-javascript">
-When(/^Ingresamos el token: (.*)$/, async (token) => {
-  await solicitar.fillToken(token);
-});
-</code></pre>
-
-      <p class="mt-2">Y el Gherkin:</p>
-      <pre><code class="language-gherkin">
-When Ingresamos el token: 123456
-</code></pre>
-    </div>
-  </div>
-</section>
-
-</div> <!-- CIERRA el div.content -->
-</div> <!-- CIERRA el div.main-content -->
-
-<script>
-  const themeToggle = document.getElementById('theme-toggle');
-  
-  // Check for saved theme preference
-  if (localStorage.getItem('theme') === 'dark') {
-    document.documentElement.classList.add('dark');
-    document.documentElement.classList.remove('light');
-    themeToggle.checked = true;
-  } else {
-    document.documentElement.classList.add('light');
-    document.documentElement.classList.remove('dark');
-  }
-  
-  // Theme toggle event listener
-  themeToggle.addEventListener('change', () => {
-    if (themeToggle.checked) {
-      document.documentElement.classList.add('dark');
-      document.documentElement.classList.remove('light');
-      localStorage.setItem('theme', 'dark');
-    } else {
-      document.documentElement.classList.add('light');
-      document.documentElement.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
+  <!-- Scripts para cargar Header y Sidebar dinámicamente -->
+  <script>
+    function loadComponent(id, url, callback) {
+      fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          document.getElementById(id).innerHTML = html;
+          if (callback) callback();
+        })
+        .catch(err => console.error(`Error cargando ${url}:`, err));
     }
-  });
-  
-  // Search functionality
-  const searchInput = document.getElementById('search-input');
-  const searchResults = document.getElementById('search-results');
-  
-  searchInput.addEventListener('input', function(e) {
-    const searchTerm = e.target.value.toLowerCase();
-    const content = document.querySelector('.content');
-    const headings = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
-    
-    // Clear previous results
-    searchResults.innerHTML = '';
-    
-    if (searchTerm === '') {
-      searchResults.classList.remove('active');
-      return;
-    }
-    
-    // Find matches
-    const matches = Array.from(headings).filter(heading => 
-      heading.textContent.toLowerCase().includes(searchTerm)
-    );
-    
-    // Show results dropdown
-    if (matches.length > 0) {
-      searchResults.classList.add('active');
-      matches.forEach(match => {
-        const resultItem = document.createElement('div');
-        resultItem.className = 'search-result-item';
-        resultItem.textContent = match.textContent;
-        resultItem.addEventListener('click', () => {
-          match.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          searchInput.value = '';
-          searchResults.classList.remove('active');
-        });
-        searchResults.appendChild(resultItem);
-      });
-    } else {
-      searchResults.classList.remove('active');
-    }
-  });
-  
-  // Close search results when clicking outside
-  document.addEventListener('click', function(e) {
-    if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
-      searchResults.classList.remove('active');
-    }
-  });
-  
-  // Add smooth scroll to all anchor links
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-      e.preventDefault();
-      const target = document.querySelector(this.getAttribute('href'));
-      if (target) {
-        // Find the previous hr element
-        let prevHr = target.previousElementSibling;
-        while (prevHr && prevHr.tagName !== 'HR') {
-          prevHr = prevHr.previousElementSibling;
-        }
-        
-        // If we found a previous hr, scroll to it, otherwise scroll to the target
-        if (prevHr) {
-          prevHr.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-          });
+
+    window.onload = function () {
+      loadComponent('header-container', 'components/header.html', () => {
+        const themeToggle = document.getElementById('theme-toggle');
+        if (!themeToggle) return;
+
+        if (localStorage.getItem('theme') === 'dark') {
+          document.documentElement.classList.add('dark');
+          document.documentElement.classList.remove('light');
+          themeToggle.checked = true;
         } else {
-          target.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-          });
+          document.documentElement.classList.add('light');
+          document.documentElement.classList.remove('dark');
         }
-      }
-    });
-  });
-</script>
 
+        themeToggle.addEventListener('change', () => {
+          if (themeToggle.checked) {
+            document.documentElement.classList.add('dark');
+            document.documentElement.classList.remove('light');
+            localStorage.setItem('theme', 'dark');
+          } else {
+            document.documentElement.classList.add('light');
+            document.documentElement.classList.remove('dark');
+            localStorage.setItem('theme', 'light');
+          }
+        });
+      });
+
+      loadComponent('sidebar-container', 'components/sidebar.html');
+    };
+  </script>
+  <script src="scripts/search.js"></script>
+  <script src="scripts/header.js"></script>
 </body>
 </html>

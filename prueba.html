@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es" class="light">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Qualis Lab - Playwright DOC - Nueva Sección</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="./assets/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="./assets/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="./assets/favicon-16x16.png">
+  <link rel="manifest" href="./assets/site.webmanifest">
+
+  <!-- Fuente Poppins -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap" rel="stylesheet">
+
+  <!-- CSS principal -->
+  <link rel="stylesheet" href="styles.css">
+
+  <!-- Highlight.js -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/github-dark.min.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+</head>
+<script>
+    function loadComponent(id, url, callback) {
+      fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          document.getElementById(id).innerHTML = html;
+          if (callback) callback();
+        })
+        .catch(err => console.error(`Error cargando ${url}:`, err));
+    }
+  
+    window.onload = function () {
+      loadComponent('header-container', 'components/header.html', () => {
+        if (typeof initHeader === 'function') {
+          initHeader(); // activa el dark mode
+        }
+      });
+      loadComponent('sidebar-container', 'components/sidebar.html');
+    };
+  </script>
+  
+<body>
+
+  <!-- HEADER dinámico -->
+  <div id="header-container"></div>
+
+  <div class="main-content">
+    <!-- SIDEBAR dinámico -->
+    <div id="sidebar-container"></div>
+
+    <!-- CONTENIDO -->
+    <div class="content">
+      <div class="content-container">
+
+        <!-- Sección principal -->
+        <section id="seccion-nueva" class="section-content">
+          <h1 class="section-title">Calculadora de Estimación de Tiempo</h1>
+
+          <p class="section-paragraph">Esta herramienta permite estimar el tiempo requerido para ejecutar pruebas según distintos criterios: criticidad, acciones por caso o cantidad de pantallas.</p>
+
+          <h2>Por Criticidad</h2>
+          <form id="criticidad-form">
+            <label>Alta:</label><input type="number" id="alta" min="0"><br>
+            <label>Media:</label><input type="number" id="media" min="0"><br>
+            <label>Baja:</label><input type="number" id="baja" min="0"><br>
+            <label>Muy baja:</label><input type="number" id="muy-baja" min="0"><br>
+            <button type="button" onclick="calcularCriticidad()">Calcular</button>
+            <p id="resultado-criticidad"></p>
+          </form>
+
+          <hr class="hr-divider">
+
+          <h2>Por Cantidad de Acciones</h2>
+          <form id="acciones-form">
+            <label>Cantidad de casos:</label><input type="number" id="casos-acciones" min="0"><br>
+            <label>Acciones promedio por caso:</label><input type="number" id="acciones-promedio" min="0"><br>
+            <button type="button" onclick="calcularAcciones()">Calcular</button>
+            <p id="resultado-acciones"></p>
+          </form>
+
+          <hr class="hr-divider">
+
+          <h2>Por Cantidad de Pantallas</h2>
+          <form id="pantallas-form">
+            <label>Cantidad de pantallas:</label><input type="number" id="pantallas" min="0"><br>
+            <label>Casos por pantalla:</label><input type="number" id="casos-por-pantalla" min="0"><br>
+            <button type="button" onclick="calcularPantallas()">Calcular</button>
+            <p id="resultado-pantallas"></p>
+          </form>
+
+        </section>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function calcularCriticidad() {
+      const alta = +document.getElementById('alta').value * 1.5;
+      const media = +document.getElementById('media').value * 1.2;
+      const baja = +document.getElementById('baja').value * 1.0;
+      const muyBaja = +document.getElementById('muy-baja').value * 0.7;
+      const total = alta + media + baja + muyBaja;
+      document.getElementById('resultado-criticidad').textContent = `Estimación total: ${total.toFixed(1)} hs`;
+    }
+
+    function calcularAcciones() {
+      const casos = +document.getElementById('casos-acciones').value;
+      const acciones = +document.getElementById('acciones-promedio').value;
+      const tiempo = casos * acciones * 0.1;
+      document.getElementById('resultado-acciones').textContent = `Estimación total: ${tiempo.toFixed(1)} hs`;
+    }
+
+    function calcularPantallas() {
+      const pantallas = +document.getElementById('pantallas').value;
+      const casos = +document.getElementById('casos-por-pantalla').value;
+      const total = pantallas * casos * 0.5;
+      document.getElementById('resultado-pantallas').textContent = `Estimación total: ${total.toFixed(1)} hs`;
+    }
+  </script>
+
+  <script src="scripts/header.js"></script>
+  <script src="scripts/search.js"></script>
+</body>
+
+</html>

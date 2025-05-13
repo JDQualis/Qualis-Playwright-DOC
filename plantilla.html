@@ -4,25 +4,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Qualis Lab - Playwright DOC</title>
+  <title>Qualis Lab - Playwright DOC - Nueva Sección</title>
 
-  <!-- Favicons -->
+  <!-- Favicon -->
   <link rel="icon" type="image/x-icon" href="./assets/favicon.ico">
   <link rel="apple-touch-icon" sizes="180x180" href="./assets/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="./assets/favicon-16x16.png">
   <link rel="manifest" href="./assets/site.webmanifest">
 
-  <!-- Fuentes -->
+  <!-- Fuente Poppins -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap" rel="stylesheet">
+
+  <!-- CSS principal -->
+  <link rel="stylesheet" href="styles.css">
 
   <!-- Highlight.js -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/github-dark.min.css" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
   <script>hljs.highlightAll();</script>
-
-  <!-- Estilos principales -->
-  <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
@@ -37,34 +37,22 @@
     <!-- CONTENIDO -->
     <div class="content">
       <div class="content-container">
-        <section id="introduccion" class="section-content">
-          <h1 class="section-title" style="display: flex; align-items: center; gap: 0.7em;">
-            <img src="./assets/playwrightLogo.png" alt="Playwright Logo" style="height: 2em; vertical-align: middle;">
-            Framework Playwright
-          </h1>
+
+        <!-- Sección principal -->
+        <section id="seccion-nueva" class="section-content">
+          <h1 class="section-title">Título de la nueva sección</h1>
 
           <p class="section-paragraph">
-            Esta documentación describe el uso, instalación, ejecución y buenas prácticas del framework Playwright desarrollado para Qualis Lab.
-          </p>
-
-          <p class="section-paragraph">
-            Utilizá el menú lateral o el buscador para navegar entre las diferentes secciones.
+            Descripción o contenido inicial de esta nueva sección.
           </p>
 
           <hr class="hr-divider">
 
           <p class="section-paragraph">
-            Este documento permite instalar y dejar listo el entorno necesario para utilizar el framework de automatización basado en Playwright, Cucumber y Node.js.
-          </p>
-
-          <p class="section-paragraph">
-            Este repositorio contiene una prueba de concepto (PoC) para el uso de Playwright en proyectos de automatización de pruebas, utilizando Cucumber y Node.js.
-          </p>
-
-          <p class="section-paragraph">
-            Este proyecto explora las capacidades de Playwright, incluyendo ejemplos básicos de interacción con navegadores Chrome, Firefox y WebKit, junto con Cucumber para escribir pruebas en lenguaje natural.
+            A partir de aquí podés agregar más contenido, código, imágenes, ejemplos, etc.
           </p>
         </section>
+
       </div>
     </div>
   </div>
@@ -84,7 +72,7 @@
     window.onload = function () {
       loadComponent('header-container', 'components/header.html', () => {
         if (typeof initHeader === 'function') {
-          initHeader(); // Inicializa el header (Dark mode, etc)
+          initHeader();
         }
       });
 

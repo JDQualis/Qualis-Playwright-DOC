@@ -13,6 +13,18 @@
     const theme = localStorage.getItem('theme') || 'dark';
     document.documentElement.classList.remove('light', 'dark');
     document.documentElement.classList.add(theme);
+
+    // Configuración global para rutas
+    window.config = {
+      getBasePath: () => {
+        const isGitHubPages = window.location.hostname.includes('github.io');
+        if (isGitHubPages) {
+          const pathSegments = window.location.pathname.split('/');
+          return pathSegments.length > 1 ? `/${pathSegments[1]}` : '';
+        }
+        return '';
+      }
+    };
   </script>
 
   <!-- Estilos y fuentes -->
@@ -43,9 +55,12 @@
   <!-- Scripts core -->
   <script>
     function loadComponent(id, url, callback) {
-      fetch(url)
+      const basePath = window.config.getBasePath();
+      const fullUrl = `${basePath}${url}`;
+      
+      fetch(fullUrl)
         .then(res => {
-          if (!res.ok) throw new Error(`❌ Error al cargar ${url}`);
+          if (!res.ok) throw new Error(`❌ Error al cargar ${fullUrl}`);
           return res.text();
         })
         .then(html => {
@@ -60,7 +75,9 @@
 
     // Hacer routeTo disponible globalmente
     window.routeTo = function(page) {
-      const path = `./components/pages/${page}.html`;
+      const basePath = window.config.getBasePath();
+      const path = `${basePath}/components/pages/${page}.html`;
+      
       fetch(path)
         .then(res => {
           if (!res.ok) throw new Error(`No se pudo cargar ${path}`);
@@ -69,7 +86,7 @@
         .then(html => {
           document.getElementById('main-content').innerHTML = html;
           if (window.hljs) hljs.highlightAll();
-          window.history.pushState({}, '', `#${page}`);
+          window.history.pushState({}, '', `${basePath}#${page}`);
         })
         .catch(err => {
           console.error(err);

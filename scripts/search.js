@@ -1,13 +1,15 @@
-loadComponent('header-container', 'components/header.html', () => {
-  initHeader();
+window.onload = function () {
+  loadComponent('header-container', 'components/header.html', () => {
+    if (typeof initHeader === 'function') {
+      initHeader(); // Inicializa el header (Dark mode, etc)
+    }
 
-  // Esperar un breve tiempo o usar MutationObserver si es dinámico
-  setTimeout(() => {
+    // 👇 Mover la lógica de búsqueda acá
     const searchInput = document.getElementById('search-input');
     const resultsBox = document.getElementById('search-results');
 
     if (!searchInput || !resultsBox) {
-      console.warn('⚠️ No se encontró el input o el contenedor de resultados');
+      console.warn('🔍 No se encontró el input o el contenedor de resultados');
       return;
     }
 
@@ -21,7 +23,7 @@ loadComponent('header-container', 'components/header.html', () => {
       }
 
       try {
-        const res = await fetch('./search-index.json'); // usa ruta relativa
+        const res = await fetch('./search-index.json');
         const data = await res.json();
 
         const filtered = data.flatMap(section => {
@@ -43,5 +45,7 @@ loadComponent('header-container', 'components/header.html', () => {
         resultsBox.innerHTML = '<div class="search-error">Error al buscar</div>';
       }
     });
-  }, 300); // ajustá el tiempo si es necesario
-});
+  });
+
+  loadComponent('sidebar-container', 'components/sidebar.html');
+};

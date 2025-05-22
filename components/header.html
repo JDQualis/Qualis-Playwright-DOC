@@ -3,19 +3,15 @@
     <img src="./assets/logo.png" alt="Logo" class="logo" />
   </div>
 
-  <div class="search-box-centered">
-    <div class="search-container">
-      <div class="search-input-wrapper">
-        <i class="fas fa-search search-icon"></i>
-        <input 
-          type="search" 
-          id="search-input" 
-          class="search-input" 
-          placeholder="Buscar en la documentación..." 
-          autocomplete="off" 
-        />
-      </div>
-      <div id="search-suggestions" class="search-suggestions"></div>
+  <div class="header-center">
+    <div class="search-box">
+      <input 
+        type="text" 
+        id="search-input" 
+        placeholder="Buscar en la documentación..." 
+        class="search-input"
+      />
+      <div id="search-results" class="search-results"></div>
     </div>
   </div>
 
@@ -31,3 +27,64 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 </head>
+
+<script>
+document.getElementById('search-input').addEventListener('input', function(e) {
+  const query = e.target.value.toLowerCase();
+  const resultsDiv = document.getElementById('search-results');
+  
+  if (query.length < 2) {
+    resultsDiv.style.display = 'none';
+    return;
+  }
+
+  const pages = [
+    { title: 'Inicio', url: '#home', description: 'Página principal' },
+    { title: 'Instalación', url: '#instalacion', description: 'Guía de instalación' },
+    { title: 'Estructura', url: '#estructura', description: 'Estructura del proyecto' },
+    { title: 'Pages y Locators', url: '#pages-locators', description: 'Implementación de Page Objects' },
+    { title: 'Cucumber', url: '#cucumber', description: 'Tests con Cucumber' },
+    { title: 'Ejecución', url: '#ejecucion', description: 'Ejecutar pruebas' },
+    { title: 'Reportes', url: '#reportes', description: 'Ver reportes' },
+    { title: 'Buenas Prácticas', url: '#buenas-practicas', description: 'Guía de buenas prácticas' }
+  ];
+
+  const results = pages.filter(page => 
+    page.title.toLowerCase().includes(query) || 
+    page.description.toLowerCase().includes(query)
+  );
+
+  if (results.length > 0) {
+    resultsDiv.innerHTML = results.map(result => `
+      <a href="${result.url}" class="search-result-item">
+        <div class="result-title">${result.title}</div>
+        <div class="result-description">${result.description}</div>
+      </a>
+    `).join('');
+    resultsDiv.style.display = 'block';
+  } else {
+    resultsDiv.innerHTML = '<div class="no-results">No se encontraron resultados</div>';
+    resultsDiv.style.display = 'block';
+  }
+});
+
+document.addEventListener('click', function(e) {
+  const searchBox = document.querySelector('.search-box');
+  const resultsDiv = document.getElementById('search-results');
+  
+  if (!searchBox.contains(e.target)) {
+    resultsDiv.style.display = 'none';
+  }
+});
+
+document.getElementById('search-results').addEventListener('click', function(e) {
+  const link = e.target.closest('a');
+  if (link) {
+    e.preventDefault();
+    const page = link.getAttribute('href').replace('#', '');
+    window.routeTo(page);
+    document.getElementById('search-input').value = '';
+    document.getElementById('search-results').style.display = 'none';
+  }
+});
+</script>

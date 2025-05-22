@@ -1,101 +1,100 @@
 <!DOCTYPE html>
-<html lang="es" class="light">
-
+<html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Qualis Lab - Playwright DOC</title>
-
-  <!-- Favicons -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Qualis Lab - Playwright Doc</title>
   <link rel="icon" type="image/x-icon" href="./assets/favicon.ico">
   <link rel="apple-touch-icon" sizes="180x180" href="./assets/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="./assets/favicon-16x16.png">
   <link rel="manifest" href="./assets/site.webmanifest">
+  <script>
+    const theme = localStorage.getItem('theme') || 'dark';
+    document.documentElement.classList.remove('light', 'dark');
+    document.documentElement.classList.add(theme);
+  </script>
 
-  <!-- Fuentes -->
+  <!-- Estilos y fuentes -->
+  <link rel="stylesheet" href="./styles.css" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap" rel="stylesheet">
 
   <!-- Highlight.js -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/github-dark.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/github-dark.min.css" rel="stylesheet" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
-  <script>hljs.highlightAll();</script>
-
-  <!-- Estilos principales -->
-  <link rel="stylesheet" href="styles.css">
 </head>
-
 <body>
-
-  <!-- HEADER dinámico -->
+  <!-- Header fijo -->
   <div id="header-container"></div>
 
   <div class="main-content">
-    <!-- SIDEBAR dinámico -->
+    <!-- Sidebar fijo -->
     <div id="sidebar-container"></div>
 
-    <!-- CONTENIDO -->
+    <!-- Contenido dinamico -->
     <div class="content">
-      <div class="content-container">
-        <section id="introduccion" class="section-content">
-          <h1 class="section-title" style="display: flex; align-items: center; gap: 0.7em;">
-            <img src="./assets/playwrightLogo.png" alt="Playwright Logo" style="height: 2em; vertical-align: middle;">
-            Framework Playwright
-          </h1>
-
-          <p class="section-paragraph">
-            Esta documentación describe el uso, instalación, ejecución y buenas prácticas del framework Playwright desarrollado para Qualis Lab.
-          </p>
-
-          <p class="section-paragraph">
-            Utilizá el menú lateral o el buscador para navegar entre las diferentes secciones.
-          </p>
-
-          <hr class="hr-divider">
-
-          <p class="section-paragraph">
-            Este documento permite instalar y dejar listo el entorno necesario para utilizar el framework de automatización basado en Playwright, Cucumber y Node.js.
-          </p>
-
-          <p class="section-paragraph">
-            Este repositorio contiene una prueba de concepto (PoC) para el uso de Playwright en proyectos de automatización de pruebas, utilizando Cucumber y Node.js.
-          </p>
-
-          <p class="section-paragraph">
-            Este proyecto explora las capacidades de Playwright, incluyendo ejemplos básicos de interacción con navegadores Chrome, Firefox y WebKit, junto con Cucumber para escribir pruebas en lenguaje natural.
-          </p>
-        </section>
+      <div class="content-container" id="main-content">
+        <!-- Se carga desde components/pages/*.html -->
       </div>
     </div>
   </div>
 
-  <!-- Scripts para cargar componentes -->
+  <!-- Scripts core -->
   <script>
     function loadComponent(id, url, callback) {
       fetch(url)
-        .then(res => res.text())
+        .then(res => {
+          if (!res.ok) throw new Error(`❌ Error al cargar ${url}`);
+          return res.text();
+        })
         .then(html => {
           document.getElementById(id).innerHTML = html;
           if (callback) callback();
         })
-        .catch(err => console.error(`Error cargando ${url}:`, err));
+        .catch(err => {
+          console.error(err);
+          document.getElementById(id).innerHTML = `<div style="color:red;">${err.message}</div>`;
+        });
     }
 
-    window.onload = function () {
-      loadComponent('header-container', 'components/header.html', () => {
-        if (typeof initHeader === 'function') {
-          initHeader(); // Inicializa el header (Dark mode, etc)
-        }
+    function routeTo(page) {
+      const path = `./components/pages/${page}.html`;
+      fetch(path)
+        .then(res => {
+          if (!res.ok) throw new Error(`No se pudo cargar ${path}`);
+          return res.text();
+        })
+        .then(html => {
+          document.getElementById('main-content').innerHTML = html;
+          if (window.hljs) hljs.highlightAll();
+          window.history.pushState({}, '', `#${page}`);
+        })
+        .catch(err => {
+          console.error(err);
+          document.getElementById('main-content').innerHTML = '<p style="color:red;">Error al cargar el contenido.</p>';
+        });
+    }
+
+    window.addEventListener('popstate', () => {
+      const page = window.location.hash.replace('#', '') || 'home';
+      routeTo(page);
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+      loadComponent('header-container', './components/header.html', () => {
+        if (typeof initHeader === 'function') initHeader();
       });
 
-      loadComponent('sidebar-container', 'components/sidebar.html');
-    };
+      loadComponent('sidebar-container', './components/sidebar.html', () => {
+        const hash = window.location.hash.replace('#', '');
+        const initialPage = hash || 'home';
+        routeTo(initialPage);
+      });
+    });
   </script>
 
   <!-- Scripts funcionales -->
-  <script src="scripts/header.js"></script>
-  <script src="scripts/search.js"></script>
-
+  <script src="./scripts/header.js" defer></script>
+  <script src="./scripts/search.js" defer></script>
 </body>
-
 </html>

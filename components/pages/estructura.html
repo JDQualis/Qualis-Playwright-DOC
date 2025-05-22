@@ -1,0 +1,49 @@
+<section id="estructura-principal" class="section-content">
+  <h1 class="section-title">📁 Estructura del Proyecto</h1>
+
+  <p class="section-paragraph">
+    El proyecto está organizado siguiendo una estructura modular que facilita su mantenimiento, escalabilidad y entendimiento general.
+    Cada carpeta y archivo cumple una función específica dentro del ciclo de automatización, desde la gestión de datos de prueba hasta la configuración de entornos de ejecución y generación de reportes automáticos.
+  </p>
+
+  <p class="section-paragraph">
+    A continuación, se detalla la estructura principal del repositorio, describiendo brevemente el propósito de cada carpeta y archivo más relevante:
+  </p>
+
+<pre><code class="language-plaintext">📁data/ > Datos de prueba
+ |
+📁Features/
+ └── spec.feature > Escenarios Gherkin
+ |
+📁node_modules/ > Librerías necesarias para la ejecución
+ |
+📁output/ > Todos los archivos relacionados al reporte
+ ├── allure-report/ > El archivo HTML dentro de esta carpeta posee el reporte final
+ ├── allure-results/
+ ├── screenshots/ > Capturas de pantalla de errores
+ └── videos/ > Grabaciones de las ejecuciones
+ |
+📁src/
+ ├── pages/
+ │    └── page.js > Acciones simples
+ │    └── locators.js > Elementos de las páginas
+ |
+ ├── step_definitions/
+ │    └── exampleSteps.js > Pasos para ejecutar los pasos del Gherkin
+ |
+📁support/ > Archivos de configuración
+ ├── browser.Config.js > Configuración del browser
+ ├── generateCucumberReport.js > Configuración Cucumber Report
+ ├── TestHooks.js > Hook del Framework
+ └── utils.js > Funciones adicionales
+
+.env > Variables de entorno
+cucumber.json > Configuración de Cucumber
+global.d.ts > Tipado global
+gitignore.txt > Archivos ignorados en el repositorio
+jsconfig.json > Configuración de autocompletado en JS
+package.json > Dependencias y scripts de ejecución
+package-lock.json > Control de versiones de dependencias
+playwright.config.js > Configuración general de Playwright
+</code></pre>
+</section>

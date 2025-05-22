@@ -1,0 +1,65 @@
+<section id="reportes" class="section-content">
+    <h1 class="section-title" style="display: flex; align-items: center; gap: 0.7em;">
+      📊 Reportes
+    </h1>
+  
+    <p class="section-paragraph">
+      El framework genera reportes automáticos utilizando <strong>Allure Report</strong>, una herramienta que permite visualizar los resultados de ejecución de manera clara y profesional, incluyendo capturas, pasos ejecutados, errores y métricas.
+    </p>
+  
+    <hr class="hr-divider">
+  
+    <h2 class="section-subtitle">Requisitos</h2>
+    <ul class="section-paragraph">
+      <li>Es necesario tener <strong>Java instalado</strong> en el sistema para poder generar y abrir los reportes.</li>
+      <li>También se recomienda tener instalada alguna extensión para servidor local como <strong>Live Server</strong> en Visual Studio Code para facilitar la visualización.</li>
+    </ul>
+  
+    <hr class="hr-divider">
+  
+    <h2 class="section-subtitle">¿Dónde se generan los reportes?</h2>
+    <p class="section-paragraph">
+      Al finalizar una ejecución exitosa de las pruebas, se genera automáticamente un reporte dentro de la carpeta:
+    </p>
+  
+    <pre class="code-block"><code>output/allure-reports/</code></pre>
+  
+    <p class="section-paragraph">
+      Dentro de esa carpeta se encontrará un archivo <code>index.html</code> que puede abrirse para visualizar el reporte completo.
+    </p>
+  
+    <hr class="hr-divider">
+  
+    <h2 class="section-subtitle">¿Cómo visualizar el reporte de manera local?</h2>
+    <p class="section-paragraph">
+      Para ver el reporte en tu navegador local, seguí estos pasos:
+    </p>
+  
+    <ol class="section-paragraph" style="padding-left: 1.2em;">
+      <li>Abrí Visual Studio Code.</li>
+      <li>Instalá la extensión <strong>Live Server</strong> (si no la tenés).</li>
+      <li>Hacé clic derecho sobre <code>output/allure-reports/index.html</code> y seleccioná <strong>"Open with Live Server"</strong>.</li>
+      <li>El reporte se abrirá automáticamente en tu navegador por defecto.</li>
+    </ol>
+  
+    <p class="section-paragraph">
+      Alternativamente, podés ejecutar manualmente:
+    </p>
+  
+    <pre class="code-block"><code>allure open output/allure-reports</code></pre>
+  
+    <p class="section-paragraph">
+      Esto abrirá una vista temporal del reporte usando el binario de Allure CLI (también requiere Java).
+    </p>
+  
+    <hr class="hr-divider">
+  
+    <h2 class="section-subtitle">¿Qué incluye el reporte?</h2>
+    <ul class="section-paragraph">
+      <li>Resumen general de los escenarios ejecutados.</li>
+      <li>Detalles por cada test: pasos, capturas, errores, duración.</li>
+      <li>Gráficos de ejecución, tasas de éxito/fallo.</li>
+      <li>Adjuntos (screenshots, logs, videos si se configuran).</li>
+    </ul>
+  </section>
+  

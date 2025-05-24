@@ -13,6 +13,7 @@
     const theme = localStorage.getItem('theme') || 'dark';
     document.documentElement.classList.remove('light', 'dark');
     document.documentElement.classList.add(theme);
+    document.documentElement.setAttribute('data-theme', theme);
 
     // Configuración global para rutas
     window.config = {

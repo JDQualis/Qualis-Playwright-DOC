@@ -1,6 +1,8 @@
 <header class="header">
   <div class="header-left">
-    <img src="./assets/logo.png" alt="Logo" class="logo" />
+    <a href="https://jdqualis.github.io/Qualis-Playwright-DOC/" target="_blank" rel="noopener noreferrer">
+      <img src="./assets/logo.png" alt="Logo" class="logo" />
+    </a>
   </div>
 
   <div class="header-center">
@@ -10,6 +12,8 @@
         id="search-input" 
         placeholder="Buscar en la documentación..." 
         class="search-input"
+        autocomplete="off"
+        spellcheck="false"
       />
       <div id="search-results" class="search-results"></div>
     </div>
@@ -29,15 +33,9 @@
 </head>
 
 <script>
-document.getElementById('search-input').addEventListener('input', function(e) {
-  const query = e.target.value.toLowerCase();
-  const resultsDiv = document.getElementById('search-results');
-  
-  if (query.length < 2) {
-    resultsDiv.style.display = 'none';
-    return;
-  }
-
+// Función de inicialización del header
+window.initHeader = function() {
+  // Datos de búsqueda simplificados
   const pages = [
     { title: 'Inicio', url: '#home', description: 'Página principal' },
     { title: 'Instalación', url: '#instalacion', description: 'Guía de instalación' },
@@ -49,42 +47,92 @@ document.getElementById('search-input').addEventListener('input', function(e) {
     { title: 'Buenas Prácticas', url: '#buenas-practicas', description: 'Guía de buenas prácticas' }
   ];
 
-  const results = pages.filter(page => 
-    page.title.toLowerCase().includes(query) || 
-    page.description.toLowerCase().includes(query)
-  );
+  const searchInput = document.getElementById('search-input');
+  const searchResults = document.getElementById('search-results');
 
-  if (results.length > 0) {
-    resultsDiv.innerHTML = results.map(result => `
-      <a href="${result.url}" class="search-result-item">
-        <div class="result-title">${result.title}</div>
-        <div class="result-description">${result.description}</div>
-      </a>
-    `).join('');
-    resultsDiv.style.display = 'block';
-  } else {
-    resultsDiv.innerHTML = '<div class="no-results">No se encontraron resultados</div>';
-    resultsDiv.style.display = 'block';
+  if (!searchInput || !searchResults) {
+    console.error('Elementos de búsqueda no encontrados');
+    return;
   }
-});
 
-document.addEventListener('click', function(e) {
-  const searchBox = document.querySelector('.search-box');
-  const resultsDiv = document.getElementById('search-results');
-  
-  if (!searchBox.contains(e.target)) {
-    resultsDiv.style.display = 'none';
-  }
-});
+  // Búsqueda simple
+  searchInput.addEventListener('input', function(e) {
+    const query = e.target.value.toLowerCase().trim();
+    console.log('Búsqueda:', query); // Debug
 
-document.getElementById('search-results').addEventListener('click', function(e) {
-  const link = e.target.closest('a');
-  if (link) {
-    e.preventDefault();
-    const page = link.getAttribute('href').replace('#', '');
-    window.routeTo(page);
-    document.getElementById('search-input').value = '';
-    document.getElementById('search-results').style.display = 'none';
+    // Mostrar/ocultar resultados basado en la longitud de la búsqueda
+    if (query.length < 2) {
+      searchResults.style.display = 'none';
+      return;
+    }
+
+    // Filtrar resultados
+    const results = pages.filter(page => 
+      page.title.toLowerCase().includes(query) || 
+      page.description.toLowerCase().includes(query)
+    );
+
+    console.log('Resultados encontrados:', results.length); // Debug
+
+    // Mostrar resultados
+    if (results.length > 0) {
+      const html = results.map(result => `
+        <a href="${result.url}" class="search-result-item">
+          <div class="result-title">${result.title}</div>
+          <div class="result-description">${result.description}</div>
+        </a>
+      `).join('');
+      
+      searchResults.innerHTML = html;
+      searchResults.style.display = 'block';
+    } else {
+      searchResults.innerHTML = '<div class="no-results">No se encontraron resultados</div>';
+      searchResults.style.display = 'block';
+    }
+  });
+
+  // Cerrar resultados al hacer clic fuera
+  document.addEventListener('click', function(e) {
+    if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
+      searchResults.style.display = 'none';
+    }
+  });
+
+  // Manejar clics en resultados
+  searchResults.addEventListener('click', function(e) {
+    const link = e.target.closest('a');
+    if (link) {
+      e.preventDefault();
+      const page = link.getAttribute('href').replace('#', '');
+      window.routeTo(page);
+      searchInput.value = '';
+      searchResults.style.display = 'none';
+    }
+  });
+
+  // Tema oscuro/claro (manteniendo el switch original)
+  const themeToggle = document.getElementById('theme-toggle');
+
+  if (themeToggle) {
+    themeToggle.addEventListener('change', function() {
+      const isDark = this.checked;
+      document.documentElement.classList.toggle('dark', isDark);
+      document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    });
+
+    // Inicializar tema
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    themeToggle.checked = savedTheme === 'dark';
+    document.documentElement.classList.toggle('dark', savedTheme === 'dark');
+    document.documentElement.setAttribute('data-theme', savedTheme);
   }
-});
+};
+
+// Ejecutar la inicialización si el DOM ya está listo
+if (document.readyState === 'complete' || document.readyState === 'interactive') {
+  window.initHeader();
+} else {
+  document.addEventListener('DOMContentLoaded', window.initHeader);
+}
 </script>

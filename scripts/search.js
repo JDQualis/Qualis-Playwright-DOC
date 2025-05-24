@@ -1,12 +1,27 @@
-import { searchDocumentation, getSearchSuggestions } from './search-index.js';
-
 export class SearchComponent {
   constructor() {
     this.searchInput = document.getElementById('search-input');
-    this.searchContainer = this.searchInput.closest('.search-container');
-    this.suggestionsContainer = document.getElementById('search-suggestions');
+    this.searchBox = this.searchInput.closest('.search-box');
+    this.searchResults = document.getElementById('search-results');
     this.currentFocus = -1;
-    this.setupEventListeners();
+
+    // Datos de búsqueda
+    this.searchData = [
+      { title: 'Inicio', url: '#home', description: 'Página principal' },
+      { title: 'Instalación', url: '#instalacion', description: 'Guía de instalación' },
+      { title: 'Estructura', url: '#estructura', description: 'Estructura del proyecto' },
+      { title: 'Pages y Locators', url: '#pages-locators', description: 'Implementación de Page Objects' },
+      { title: 'Cucumber', url: '#cucumber', description: 'Tests con Cucumber' },
+      { title: 'Ejecución', url: '#ejecucion', description: 'Ejecutar pruebas' },
+      { title: 'Reportes', url: '#reportes', description: 'Ver reportes' },
+      { title: 'Buenas Prácticas', url: '#buenas-practicas', description: 'Guía de buenas prácticas' }
+    ];
+
+    if (this.searchInput && this.searchResults) {
+      this.setupEventListeners();
+    } else {
+      console.error('No se encontraron los elementos necesarios para la búsqueda');
+    }
   }
 
   setupEventListeners() {
@@ -22,141 +37,92 @@ export class SearchComponent {
 
     // Manejar la navegación con teclado
     this.searchInput.addEventListener('keydown', (e) => {
-      const suggestions = this.suggestionsContainer.getElementsByClassName('search-suggestion');
+      const results = this.searchResults.getElementsByClassName('search-result-item');
       
       if (e.key === 'ArrowDown') {
         e.preventDefault();
-        this.currentFocus = Math.min(this.currentFocus + 1, suggestions.length - 1);
-        this.addActive(suggestions);
+        this.currentFocus = Math.min(this.currentFocus + 1, results.length - 1);
+        this.addActive(results);
       } else if (e.key === 'ArrowUp') {
         e.preventDefault();
         this.currentFocus = Math.max(this.currentFocus - 1, -1);
-        this.addActive(suggestions);
+        this.addActive(results);
       } else if (e.key === 'Enter' && this.currentFocus > -1) {
         e.preventDefault();
-        if (suggestions[this.currentFocus]) {
-          suggestions[this.currentFocus].querySelector('a').click();
+        if (results[this.currentFocus]) {
+          results[this.currentFocus].click();
         }
       } else if (e.key === 'Escape') {
-        this.closeSuggestions();
+        this.closeResults();
       }
     });
 
-    // Cerrar sugerencias al hacer clic fuera
+    // Cerrar resultados al hacer clic fuera
     document.addEventListener('click', (e) => {
-      if (!this.searchContainer.contains(e.target)) {
-        this.closeSuggestions();
-      }
-    });
-
-    // Manejar el foco del input
-    this.searchInput.addEventListener('focus', () => {
-      this.searchContainer.classList.add('is-active');
-      if (this.searchInput.value.length >= 2) {
-        this.handleSearch(this.searchInput.value);
+      if (!this.searchBox.contains(e.target)) {
+        this.closeResults();
       }
     });
   }
 
   handleSearch(query) {
-    if (!query || query.length < 2) {
-      this.closeSuggestions();
+    query = query.toLowerCase().trim();
+    
+    if (query.length < 2) {
+      this.closeResults();
       return;
     }
 
-    const suggestions = getSearchSuggestions(query);
-    this.displaySuggestions(suggestions, query);
+    const results = this.searchData.filter(item => 
+      item.title.toLowerCase().includes(query) || 
+      item.description.toLowerCase().includes(query)
+    );
+
+    this.displayResults(results, query);
   }
 
-  displaySuggestions(suggestions, query) {
-    if (suggestions.length === 0) {
-      this.closeSuggestions();
-      return;
+  displayResults(results, query) {
+    if (results.length === 0) {
+      this.searchResults.innerHTML = '<div class="no-results">No se encontraron resultados</div>';
+    } else {
+      this.searchResults.innerHTML = results.map(result => `
+        <a href="${result.url}" class="search-result-item">
+          <div class="result-title">${this.highlightMatch(result.title, query)}</div>
+          <div class="result-description">${this.highlightMatch(result.description, query)}</div>
+        </a>
+      `).join('');
     }
 
-    this.suggestionsContainer.innerHTML = '';
-    suggestions.forEach((suggestion, index) => {
-      const div = document.createElement('div');
-      div.className = 'search-suggestion';
-      
-      const highlightedTitle = this.highlightMatch(suggestion.title, query);
-      const highlightedDescription = suggestion.description ? 
-        this.highlightMatch(suggestion.description, query) : '';
-
-      // Extraer el nombre de la página de la URL
-      const pageName = suggestion.url.split('/').pop().replace('.html', '');
-      
-      div.innerHTML = `
-        <div class="suggestion-link">
-          <i class="fas fa-search suggestion-icon"></i>
-          <div class="suggestion-content">
-            <div class="suggestion-title">${highlightedTitle}</div>
-            ${highlightedDescription ? 
-              `<div class="suggestion-description">${highlightedDescription}</div>` : 
-              ''}
-          </div>
-        </div>
-      `;
-
-      div.addEventListener('click', (e) => {
-        e.preventDefault();
-        window.routeTo(pageName);
-        this.searchInput.value = '';
-        this.closeSuggestions();
-      });
-
-      div.addEventListener('mouseenter', () => {
-        this.currentFocus = index;
-        this.addActive(this.suggestionsContainer.getElementsByClassName('search-suggestion'));
-      });
-
-      this.suggestionsContainer.appendChild(div);
-    });
-
-    this.suggestionsContainer.style.display = 'block';
+    this.searchResults.style.display = 'block';
   }
 
   highlightMatch(text, query) {
+    if (!query) return text;
     const regex = new RegExp(`(${query})`, 'gi');
-    return text.replace(regex, '<span class="suggestion-highlight">$1</span>');
+    return text.replace(regex, '<mark>$1</mark>');
   }
 
-  addActive(suggestions) {
-    if (!suggestions) return;
+  addActive(results) {
+    if (!results) return;
 
-    this.removeActive(suggestions);
+    Array.from(results).forEach(result => result.classList.remove('active'));
+    
     if (this.currentFocus >= 0) {
-      suggestions[this.currentFocus].classList.add('active');
-      // Hacer scroll si es necesario
-      const activeElement = suggestions[this.currentFocus];
-      const container = this.suggestionsContainer;
-      
-      if (activeElement.offsetTop < container.scrollTop) {
-        container.scrollTop = activeElement.offsetTop;
-      } else {
-        const offsetBottom = activeElement.offsetTop + activeElement.offsetHeight;
-        const scrollBottom = container.scrollTop + container.offsetHeight;
-        if (offsetBottom > scrollBottom) {
-          container.scrollTop = offsetBottom - container.offsetHeight;
-        }
-      }
+      results[this.currentFocus].classList.add('active');
     }
   }
 
-  removeActive(suggestions) {
-    Array.from(suggestions).forEach(suggestion => {
-      suggestion.classList.remove('active');
-    });
-  }
-
-  closeSuggestions() {
-    this.suggestionsContainer.style.display = 'none';
-    this.searchContainer.classList.remove('is-active');
+  closeResults() {
+    this.searchResults.style.display = 'none';
     this.currentFocus = -1;
   }
 }
 
 // Inicializar el componente de búsqueda cuando el DOM esté listo
-document.addEventListener('DOMContentLoaded', () => {
+if (document.readyState === 'complete' || document.readyState === 'interactive') {
   new SearchComponent();
-}); 
+} else {
+  document.addEventListener('DOMContentLoaded', () => {
+    new SearchComponent();
+  });
+} 

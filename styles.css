@@ -24,31 +24,41 @@ body {
   height: 60px;
   background-color: #000;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   padding: 10px 20px;
   gap: 2rem;
   box-sizing: border-box;
 }
 .logo {
-  position: absolute;
-  left: 20px;
   width: 130px;
   height: auto;
+  display: block;
 }
-.header-left,
-.header-center,
-.header-right {
+.header-left {
+  flex: 0 0 200px; /* Ancho fijo para el área del logo */
   display: flex;
   align-items: center;
 }
+.header-left a {
+  display: block;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+.header-left a:hover {
+  opacity: 0.8;
+}
 .header-center {
   flex: 1;
+  display: flex;
   justify-content: center;
+  align-items: center;
 }
 .header-right {
+  flex: 0 0 200px; /* Mismo ancho que header-left para balance */
+  display: flex;
+  align-items: center;
   justify-content: flex-end;
-  min-width: 60px;
 }
 
 /* === SEARCH === */.search-box-centered {  position: relative;  width: 100%;  max-width: 500px;  margin: 0 auto;}.search-container {  position: relative;  width: 100%;  margin: 0 auto;}.search-input-wrapper {  position: relative;  width: 100%;}.search-icon {  position: absolute;  left: 16px;  top: 50%;  transform: translateY(-50%);  color: #94a3b8;  font-size: 16px;  pointer-events: none;}.search-input {  width: 100%;  padding: 12px 20px 12px 44px;  font-size: 16px;  border: 2px solid #e2e8f0;  border-radius: 12px;  outline: none;  transition: all 0.3s ease;  background-color: white;  color: #1e293b;  -webkit-appearance: none;}/* Estilo personalizado para el botón de limpiar (cruz) */.search-input::-webkit-search-cancel-button {  -webkit-appearance: none;  height: 16px;  width: 16px;  margin-right: 12px;  background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2394a3b8'><path d='M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z'/></svg>") no-repeat 50% 50%;  cursor: pointer;  transition: opacity 0.3s ease;}.search-input::-webkit-search-cancel-button:hover {  opacity: 0.7;}.search-input:focus {  border-color: #4f46e5;  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.1);}.search-input::placeholder {  color: #94a3b8;}.search-suggestions {  position: absolute;  top: calc(100% + 8px);  left: 0;  right: 0;  background-color: white;  border-radius: 12px;  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);  z-index: 1000;  max-height: 400px;  overflow-y: auto;  display: none;  padding: 8px 0;  border: 1px solid #e2e8f0;}.search-suggestion {  padding: 10px 16px;  cursor: pointer;  transition: all 0.2s ease;}.search-suggestion:hover {  background-color: #f8fafc;}.suggestion-link {  display: flex;  align-items: center;  text-decoration: none;  color: #1e293b;  gap: 12px;}.suggestion-icon {  color: #64748b;  font-size: 16px;}.suggestion-content {  flex: 1;}.suggestion-title {  font-weight: 500;  font-size: 14px;  margin-bottom: 4px;}.suggestion-description {  font-size: 12px;  color: #64748b;}.search-suggestions::-webkit-scrollbar {  width: 6px;}.search-suggestions::-webkit-scrollbar-track {  background: transparent;}.search-suggestions::-webkit-scrollbar-thumb {  background: #cbd5e1;  border-radius: 3px;}.search-suggestions::-webkit-scrollbar-thumb:hover {  background: #94a3b8;}@keyframes fadeIn {  from {    opacity: 0;    transform: translateY(-8px);  }  to {    opacity: 1;    transform: translateY(0);  }}.search-suggestions {  animation: fadeIn 0.2s ease-out;}.search-container.is-active .search-input {  border-radius: 12px 12px 0 0;}.search-container.is-active .search-suggestions {  border-top-left-radius: 0;  border-top-right-radius: 0;}.suggestion-highlight {  background-color: rgba(79, 70, 229, 0.1);  color: #4f46e5;  padding: 0 2px;  border-radius: 2px;}
